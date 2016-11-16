@@ -24,6 +24,7 @@ build = {
 				"unistring";
 			};
 			incdirs = {
+				"vendor/compat-5.3/c-api/";
 				"$(UNISTRING_INCDIR)";
 			};
 			libdirs = {

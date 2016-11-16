@@ -1,9 +1,12 @@
 #include <stdlib.h> /* NULL */
+
 #include <uninorm.h>
 #include <unicase.h>
 
 #include <lua.h>
 #include <lauxlib.h>
+
+#include "compat-5.3.h"
 
 static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNINORM_NFKC};
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
