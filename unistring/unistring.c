@@ -11,6 +11,34 @@
 static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNINORM_NFKC};
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 
+
+static int normalize(lua_State *L) {
+	uninorm_t nf = uninorms[luaL_checkoption(L, 1, NULL, uninormnames)];
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 2, &n);
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	uint8_t *resultbuf, *tmp;
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = (uint8_t*)luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_normalize(nf, s, n, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
 static int casefold(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
@@ -38,8 +66,10 @@ static int casefold(lua_State *L) {
 	return 1;
 }
 
+
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
+		{"normalize", normalize},
 		{"casefold", casefold},
 		{NULL, NULL}
 	};

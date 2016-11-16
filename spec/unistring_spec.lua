@@ -1,4 +1,9 @@
 local unistring = require "unistring"
+describe("normalize", function()
+	it("works", function()
+		assert.same("foo", unistring.normalize("NFC", "foo"))
+	end)
+end)
 describe("casefold", function()
 	it("works", function()
 		assert.same("foo", unistring.casefold("foo", nil, "NFC"))
