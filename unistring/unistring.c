@@ -12,7 +12,7 @@ static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNI
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 
 
-static int normalize(lua_State *L) {
+static int lunistring_normalize(lua_State *L) {
 	uninorm_t nf = uninorms[luaL_checkoption(L, 1, NULL, uninormnames)];
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 2, &n);
@@ -39,7 +39,7 @@ static int normalize(lua_State *L) {
 }
 
 
-static int casefold(lua_State *L) {
+static int lunistring_casefold(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
@@ -69,8 +69,8 @@ static int casefold(lua_State *L) {
 
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
-		{"normalize", normalize},
-		{"casefold", casefold},
+		{"normalize", lunistring_normalize},
+		{"casefold", lunistring_casefold},
 		{NULL, NULL}
 	};
 	luaL_newlib(L, lib);
