@@ -39,6 +39,90 @@ static int lunistring_normalize(lua_State *L) {
 }
 
 
+static int lunistring_toupper(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	uint8_t *resultbuf, *tmp;
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = (uint8_t*)luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_toupper(s, n, iso639_language, nf, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
+static int lunistring_tolower(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	uint8_t *resultbuf, *tmp;
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = (uint8_t*)luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_tolower(s, n, iso639_language, nf, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
+static int lunistring_totitle(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	uint8_t *resultbuf, *tmp;
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = (uint8_t*)luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_totitle(s, n, iso639_language, nf, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
 static int lunistring_casefold(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
@@ -70,6 +154,9 @@ static int lunistring_casefold(lua_State *L) {
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"normalize", lunistring_normalize},
+		{"toupper", lunistring_toupper},
+		{"tolower", lunistring_tolower},
+		{"totitle", lunistring_totitle},
 		{"casefold", lunistring_casefold},
 		{NULL, NULL}
 	};
