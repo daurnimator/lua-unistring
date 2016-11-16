@@ -10,7 +10,7 @@ static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 
 static int casefold(lua_State *L) {
 	size_t n;
-	const uint8_t *s = luaL_checklstring(L, 1, &n);
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
 	luaL_Buffer b;
@@ -20,7 +20,7 @@ static int casefold(lua_State *L) {
 	luaL_buffinit(L, &b);
 
 	while (1) {
-		resultbuf = luaL_prepbuffsize(&b, lengthp);
+		resultbuf = (uint8_t*)luaL_prepbuffsize(&b, lengthp);
 		if (!(tmp = u8_casefold(s, n, iso639_language, nf, resultbuf, &lengthp))) {
 			return luaL_fileresult(L, 0, NULL);
 		}
