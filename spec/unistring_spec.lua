@@ -8,5 +8,15 @@ describe("casefold", function()
 		assert.same("ёйцукенгшщзхъфывапролджэячсмитьбю", unistring.casefold("ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ", nil, "NFC"))
 		-- Longest decomposition
 		assert.same("صلى الله عليه وسلم", unistring.casefold("ﷺ", nil, "NFKD"))
+		-- null byte
+		assert.same("\0", unistring.casefold("\0", nil, "NFC"))
+	end)
+	it("handles corrupt unicode", function()
+		-- invalid char
+		assert.same("�", unistring.casefold("\254", nil, "NFC"))
+		-- overlong
+		assert.same("��", unistring.casefold("\192\128", nil, "NFC"))
+		-- invalid code point
+		assert.same(nil, (unistring.casefold("\237\160\128", nil, "NFC")))
 	end)
 end)
