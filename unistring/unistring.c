@@ -1,5 +1,6 @@
 #include <stdlib.h> /* NULL */
 
+#include <unistring/version.h>
 #include <uninorm.h>
 #include <unicase.h>
 #include <uniwidth.h>
@@ -319,6 +320,13 @@ int luaopen_unistring(lua_State *L) {
 		{"is_cased", lunistring_is_cased},
 		{NULL, NULL}
 	};
+
 	luaL_newlib(L, lib);
+
+	lua_pushinteger(L, _libunistring_version);
+	lua_setfield(L, -2, "libunistring_version");
+	lua_pushinteger(L, _LIBUNISTRING_VERSION);
+	lua_setfield(L, -2, "LIBUNISTRING_VERSION");
+
 	return 1;
 }
