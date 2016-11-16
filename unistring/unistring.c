@@ -10,10 +10,12 @@
 
 static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNINORM_NFKC};
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
+#define lunistring_checkuninorm(L, arg) (uninorms[luaL_checkoption((L), (arg), NULL, uninormnames)])
+#define lunistring_optuninorm(L, arg) (lua_isnoneornil(L,(arg))?NULL:lunistring_checkuninorm((L), (arg)))
 
 
 static int lunistring_normalize(lua_State *L) {
-	uninorm_t nf = uninorms[luaL_checkoption(L, 1, NULL, uninormnames)];
+	uninorm_t nf = lunistring_optuninorm(L, 1);
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 2, &n);
 	luaL_Buffer b;
@@ -43,7 +45,7 @@ static int lunistring_toupper(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	uninorm_t nf = lunistring_optuninorm(L, 3);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -71,7 +73,7 @@ static int lunistring_tolower(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	uninorm_t nf = lunistring_optuninorm(L, 3);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -99,7 +101,7 @@ static int lunistring_totitle(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	uninorm_t nf = lunistring_optuninorm(L, 3);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -127,7 +129,7 @@ static int lunistring_casefold(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = uninorms[luaL_checkoption(L, 3, NULL, uninormnames)];
+	uninorm_t nf = lunistring_optuninorm(L, 3);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
