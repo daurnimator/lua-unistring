@@ -1,4 +1,9 @@
 local unistring = require "unistring"
+describe("width", function()
+	it("works", function()
+		assert.same(3, unistring.width("foo", ""))
+	end)
+end)
 describe("normalize", function()
 	it("works", function()
 		assert.same("foo", unistring.normalize("NFC", "foo"))

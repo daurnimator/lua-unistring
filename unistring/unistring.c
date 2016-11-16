@@ -2,6 +2,7 @@
 
 #include <uninorm.h>
 #include <unicase.h>
+#include <uniwidth.h>
 
 #include <lua.h>
 #include <lauxlib.h>
@@ -12,6 +13,16 @@ static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNI
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 #define lunistring_checkuninorm(L, arg) (uninorms[luaL_checkoption((L), (arg), NULL, uninormnames)])
 #define lunistring_optuninorm(L, arg) (lua_isnoneornil(L,(arg))?NULL:lunistring_checkuninorm((L), (arg)))
+
+
+static int lunistring_width(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *encoding = luaL_checkstring(L, 2);
+	int res = u8_width(s, n, encoding);
+	lua_pushinteger(L, res);
+	return 1;
+}
 
 
 static int lunistring_normalize(lua_State *L) {
@@ -293,6 +304,7 @@ static int lunistring_is_cased(lua_State *L) {
 
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
+		{"width", lunistring_width},
 		{"normalize", lunistring_normalize},
 		{"normxfrm", lunistring_normxfrm},
 		{"toupper", lunistring_toupper},
