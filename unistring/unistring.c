@@ -41,6 +41,35 @@ static int lunistring_normalize(lua_State *L) {
 }
 
 
+static int lunistring_normxfrm(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	uninorm_t nf = lunistring_checkuninorm(L, 2);
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	char *resultbuf, *tmp;
+	luaL_argcheck(L, nf == UNINORM_NFC || nf == UNINORM_NFKC, 2, "must be either \"NFC\" or \"NFKC\"");
+
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_normxfrm(s, n, nf, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
 static int lunistring_toupper(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
@@ -265,6 +294,7 @@ static int lunistring_is_cased(lua_State *L) {
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"normalize", lunistring_normalize},
+		{"normxfrm", lunistring_normxfrm},
 		{"toupper", lunistring_toupper},
 		{"tolower", lunistring_tolower},
 		{"totitle", lunistring_totitle},
