@@ -153,6 +153,35 @@ static int lunistring_casefold(lua_State *L) {
 }
 
 
+static int lunistring_casexfrm(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	uninorm_t nf = lunistring_optuninorm(L, 3);
+	luaL_Buffer b;
+	size_t lengthp = n; /* starting guess of equal length */
+	char *resultbuf, *tmp;
+	luaL_argcheck(L, nf == UNINORM_NFC || nf == UNINORM_NFKC || nf == NULL, 3, "must be either \"NFC\", \"NFKC\", or nil");
+
+	luaL_buffinit(L, &b);
+
+	while (1) {
+		resultbuf = luaL_prepbuffsize(&b, lengthp);
+		if (!(tmp = u8_casexfrm(s, n, iso639_language, nf, resultbuf, &lengthp))) {
+			return luaL_fileresult(L, 0, NULL);
+		}
+		if (tmp != resultbuf) {
+			free(tmp);
+		} else {
+			break;
+		}
+	}
+
+	luaL_pushresultsize(&b, lengthp);
+	return 1;
+}
+
+
 static int lunistring_is_uppercase(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
@@ -240,6 +269,7 @@ int luaopen_unistring(lua_State *L) {
 		{"tolower", lunistring_tolower},
 		{"totitle", lunistring_totitle},
 		{"casefold", lunistring_casefold},
+		{"casexfrm", lunistring_casexfrm},
 		{"is_uppercase", lunistring_is_uppercase},
 		{"is_lowercase", lunistring_is_lowercase},
 		{"is_titlecase", lunistring_is_titlecase},
