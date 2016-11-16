@@ -151,6 +151,86 @@ static int lunistring_casefold(lua_State *L) {
 }
 
 
+static int lunistring_is_uppercase(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	bool resultp;
+	int res;
+
+	if (-1 == (res = u8_is_uppercase(s, n, iso639_language, &resultp))) {
+		return luaL_fileresult(L, 0, NULL);
+	}
+
+	lua_pushboolean(L, resultp);
+	return 1;
+}
+
+
+static int lunistring_is_lowercase(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	bool resultp;
+	int res;
+
+	if (-1 == (res = u8_is_lowercase(s, n, iso639_language, &resultp))) {
+		return luaL_fileresult(L, 0, NULL);
+	}
+
+	lua_pushboolean(L, resultp);
+	return 1;
+}
+
+
+static int lunistring_is_titlecase(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	bool resultp;
+	int res;
+
+	if (-1 == (res = u8_is_titlecase(s, n, iso639_language, &resultp))) {
+		return luaL_fileresult(L, 0, NULL);
+	}
+
+	lua_pushboolean(L, resultp);
+	return 1;
+}
+
+
+static int lunistring_is_casefolded(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	bool resultp;
+	int res;
+
+	if (-1 == (res = u8_is_casefolded(s, n, iso639_language, &resultp))) {
+		return luaL_fileresult(L, 0, NULL);
+	}
+
+	lua_pushboolean(L, resultp);
+	return 1;
+}
+
+
+static int lunistring_is_cased(lua_State *L) {
+	size_t n;
+	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
+	const char *iso639_language = luaL_optstring(L, 2, NULL);
+	bool resultp;
+	int res;
+
+	if (-1 == (res = u8_is_cased(s, n, iso639_language, &resultp))) {
+		return luaL_fileresult(L, 0, NULL);
+	}
+
+	lua_pushboolean(L, resultp);
+	return 1;
+}
+
+
 int luaopen_unistring(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"normalize", lunistring_normalize},
@@ -158,6 +238,11 @@ int luaopen_unistring(lua_State *L) {
 		{"tolower", lunistring_tolower},
 		{"totitle", lunistring_totitle},
 		{"casefold", lunistring_casefold},
+		{"is_uppercase", lunistring_is_uppercase},
+		{"is_lowercase", lunistring_is_lowercase},
+		{"is_titlecase", lunistring_is_titlecase},
+		{"is_casefolded", lunistring_is_casefolded},
+		{"is_cased", lunistring_is_cased},
 		{NULL, NULL}
 	};
 	luaL_newlib(L, lib);
