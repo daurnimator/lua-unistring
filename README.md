@@ -21,3 +21,7 @@ It's recommended to install lua-unistring by using [luarocks](https://luarocks.o
 ## Dependencies
 
   - [libunistring](https://www.gnu.org/software/libunistring)
+
+### For running tests
+
+  - [busted](http://olivinelabs.com/busted/)
