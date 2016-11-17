@@ -1,9 +1,9 @@
 #include <stdlib.h> /* NULL */
 
+#include <unictype.h>
+
 #include <lua.h>
 #include <lauxlib.h>
-
-#include <unictype.h>
 
 
 static void lunistring_pushucgeneralcategory(lua_State *L, uc_general_category_t category) {
@@ -73,7 +73,7 @@ static int lunistring_uc_is_general_category(lua_State *L) {
 
 
 int luaopen_unistring_ctype_general_category(lua_State *L) {
-	static const luaL_Reg category_lib[] = {
+	static const luaL_Reg lib[] = {
 		{"of", lunistring_uc_general_category},
 		{"byname", lunistring_uc_general_category_byname},
 		{"is", lunistring_uc_is_general_category},
@@ -95,9 +95,8 @@ int luaopen_unistring_ctype_general_category(lua_State *L) {
 	lua_setfield(L, -2, "__index");
 	lua_pop(L, 1);
 
-	luaL_newlib(L, category_lib);
+	luaL_newlib(L, lib);
 	luaL_setfuncs(L, uc_general_category_methods, 0); // add methods to lib too
 
 	return 1;
 }
-

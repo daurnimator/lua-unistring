@@ -1,8 +1,10 @@
-#include <lua.h>
-#include <lauxlib.h>
+#include <stdlib.h> /* NULL */
 
 #include <unictype.h>
 #include <uniwbrk.h>
+
+#include <lua.h>
+#include <lauxlib.h>
 
 
 static int lunistring_uc_wordbreak_property(lua_State *L) {

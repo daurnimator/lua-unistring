@@ -49,7 +49,7 @@ describe("wordbreak property", function()
 		assert.same(unictype.WBP.ALETTER, unictype.wordbreak_property(string.byte("f")))
 	end)
 end)
-describe("number related ctyle functions", function()
+describe("number related ctype functions", function()
 	local unictype = require "unistring.ctype"
 	it("decimal_value", function()
 		assert.same(1, unictype.decimal_value(string.byte("1")))

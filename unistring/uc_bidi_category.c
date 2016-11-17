@@ -1,9 +1,9 @@
 #include <stdlib.h> /* NULL */
 
+#include <unictype.h>
+
 #include <lua.h>
 #include <lauxlib.h>
-
-#include <unictype.h>
 
 
 static int lunistring_uc_bidi_category_name(lua_State *L) {
@@ -49,4 +49,3 @@ int luaopen_unistring_ctype_bidi_category(lua_State *L) {
 	luaL_newlib(L, category_lib);
 	return 1;
 }
-

@@ -10,6 +10,7 @@
 
 #include "compat-5.3.h"
 
+
 static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNINORM_NFKC};
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 #define lunistring_checkuninorm(L, arg) (uninorms[luaL_checkoption((L), (arg), NULL, uninormnames)])

@@ -1,9 +1,9 @@
 #include <stdlib.h> /* NULL */
 
+#include <unictype.h>
+
 #include <lua.h>
 #include <lauxlib.h>
-
-#include <unictype.h>
 
 
 static void lunistring_pushucproperty(lua_State *L, uc_property_t property) {
