@@ -37,11 +37,26 @@ static int lunistring_uc_digit_value(lua_State *L) {
 }
 
 
+static int lunistring_uc_numeric_value(lua_State *L) {
+	ucs4_t uc = luaL_checkinteger(L, 1);
+	uc_fraction_t res = uc_numeric_value(uc);
+	if (res.numerator == 0 && res.denominator == 0) {
+		lua_pushnil(L);
+		return 1;
+	} else {
+		lua_pushinteger(L, res.numerator);
+		lua_pushinteger(L, res.denominator);
+		return 2;
+	}
+}
+
+
 int luaopen_unistring_ctype(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"wordbreak_property", lunistring_uc_wordbreak_property},
 		{"decimal_value", lunistring_uc_decimal_value},
 		{"digit_value", lunistring_uc_digit_value},
+		{"numeric_value", lunistring_uc_numeric_value},
 		{NULL, NULL}
 	};
 
