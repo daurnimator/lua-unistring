@@ -24,6 +24,7 @@ build = {
 				"unistring/uc.c";
 				"unistring/uc_bidi_category.c";
 				"unistring/uc_general_category.c";
+				"unistring/uc_property.c";
 			};
 			libraries = {
 				"unistring";
