@@ -1,6 +1,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include <unictype.h>
 #include <uniwbrk.h>
 
 
@@ -12,9 +13,22 @@ static int lunistring_uc_wordbreak_property(lua_State *L) {
 }
 
 
+static int lunistring_uc_decimal_value(lua_State *L) {
+	ucs4_t uc = luaL_checkinteger(L, 1);
+	int res = uc_decimal_value(uc);
+	if (res == -1) {
+		lua_pushnil(L);
+	} else {
+		lua_pushinteger(L, res);
+	}
+	return 1;
+}
+
+
 int luaopen_unistring_ctype(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"wordbreak_property", lunistring_uc_wordbreak_property},
+		{"decimal_value", lunistring_uc_decimal_value},
 		{NULL, NULL}
 	};
 
