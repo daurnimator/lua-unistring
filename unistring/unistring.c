@@ -1,8 +1,8 @@
 #include <stdlib.h> /* NULL */
 
 #include <unistring/version.h>
-#include <uninorm.h>
 #include <unicase.h>
+#include <uninorm.h>
 #include <uniwidth.h>
 
 #include <lua.h>

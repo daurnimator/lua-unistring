@@ -19,7 +19,10 @@ build = {
 	type = "builtin";
 	modules = {
 		unistring = {
-			sources = "unistring/unistring.c";
+			sources = {
+				"unistring/unistring.c";
+				"unistring/uc_general_category.c";
+			};
 			libraries = {
 				"unistring";
 			};
