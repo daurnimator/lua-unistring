@@ -5,6 +5,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "compat-5.3.h"
+
 
 static void lunistring_pushucgeneralcategory(lua_State *L, uc_general_category_t category) {
 	uc_general_category_t *ud = lua_newuserdata(L, sizeof(uc_general_category_t));

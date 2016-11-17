@@ -5,6 +5,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "compat-5.3.h"
+
 
 static int lunistring_uc_bidi_category_name(lua_State *L) {
 	int category = luaL_checkinteger(L, 1);

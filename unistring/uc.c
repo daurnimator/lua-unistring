@@ -6,6 +6,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "compat-5.3.h"
+
 
 static int lunistring_uc_wordbreak_property(lua_State *L) {
 	ucs4_t uc = luaL_checkinteger(L, 1);

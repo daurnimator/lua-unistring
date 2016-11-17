@@ -5,6 +5,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+#include "compat-5.3.h"
+
 
 static void lunistring_pushucproperty(lua_State *L, uc_property_t property) {
 	uc_property_t *ud = lua_newuserdata(L, sizeof(uc_property_t));
