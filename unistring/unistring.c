@@ -235,9 +235,8 @@ static int lunistring_is_uppercase(lua_State *L) {
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	bool resultp;
-	int res;
 
-	if (-1 == (res = u8_is_uppercase(s, n, iso639_language, &resultp))) {
+	if (-1 == u8_is_uppercase(s, n, iso639_language, &resultp)) {
 		return luaL_fileresult(L, 0, NULL);
 	}
 
@@ -251,9 +250,8 @@ static int lunistring_is_lowercase(lua_State *L) {
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	bool resultp;
-	int res;
 
-	if (-1 == (res = u8_is_lowercase(s, n, iso639_language, &resultp))) {
+	if (-1 == u8_is_lowercase(s, n, iso639_language, &resultp)) {
 		return luaL_fileresult(L, 0, NULL);
 	}
 
@@ -267,9 +265,8 @@ static int lunistring_is_titlecase(lua_State *L) {
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	bool resultp;
-	int res;
 
-	if (-1 == (res = u8_is_titlecase(s, n, iso639_language, &resultp))) {
+	if (-1 == u8_is_titlecase(s, n, iso639_language, &resultp)) {
 		return luaL_fileresult(L, 0, NULL);
 	}
 
@@ -283,9 +280,8 @@ static int lunistring_is_casefolded(lua_State *L) {
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	bool resultp;
-	int res;
 
-	if (-1 == (res = u8_is_casefolded(s, n, iso639_language, &resultp))) {
+	if (-1 == u8_is_casefolded(s, n, iso639_language, &resultp)) {
 		return luaL_fileresult(L, 0, NULL);
 	}
 
@@ -299,9 +295,8 @@ static int lunistring_is_cased(lua_State *L) {
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
 	bool resultp;
-	int res;
 
-	if (-1 == (res = u8_is_cased(s, n, iso639_language, &resultp))) {
+	if (-1 == u8_is_cased(s, n, iso639_language, &resultp)) {
 		return luaL_fileresult(L, 0, NULL);
 	}
 
