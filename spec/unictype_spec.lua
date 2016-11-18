@@ -64,6 +64,13 @@ describe("number related ctype functions", function()
 		assert.same(nil, unictype.numeric_value(string.byte("a")))
 	end)
 end)
+describe("mirror_char", function()
+	local unictype = require "unistring.ctype"
+	it("works", function()
+		assert.same({false, string.byte("f")}, {unictype.mirror_char(string.byte("f"))})
+		assert.same({true, string.byte("<")}, {unictype.mirror_char(string.byte(">"))})
+	end)
+end)
 describe("property", function()
 	local property = require "unistring.ctype.property"
 	it("has working .is()", function()

@@ -55,12 +55,23 @@ static int lunistring_uc_numeric_value(lua_State *L) {
 }
 
 
+static int lunistring_uc_mirror_char(lua_State *L) {
+	ucs4_t uc = luaL_checkinteger(L, 1);
+	ucs4_t puc;
+	bool res = uc_mirror_char(uc, &puc);
+	lua_pushboolean(L, res);
+	lua_pushinteger(L, puc);
+	return 2;
+}
+
+
 int luaopen_unistring_ctype(lua_State *L) {
 	static const luaL_Reg lib[] = {
 		{"wordbreak_property", lunistring_uc_wordbreak_property},
 		{"decimal_value", lunistring_uc_decimal_value},
 		{"digit_value", lunistring_uc_digit_value},
 		{"numeric_value", lunistring_uc_numeric_value},
+		{"mirror_char", lunistring_uc_mirror_char},
 		{NULL, NULL}
 	};
 
