@@ -83,6 +83,12 @@ static int lunistring_normxfrm(lua_State *L) {
 }
 
 
+static int lunistring_uc_locale_language(lua_State *L) {
+	lua_pushstring(L, uc_locale_language());
+	return 1;
+}
+
+
 static int lunistring_toupper(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
@@ -309,6 +315,7 @@ int luaopen_unistring(lua_State *L) {
 		{"width", lunistring_width},
 		{"normalize", lunistring_normalize},
 		{"normxfrm", lunistring_normxfrm},
+		{"locale_language", lunistring_uc_locale_language},
 		{"toupper", lunistring_toupper},
 		{"tolower", lunistring_tolower},
 		{"totitle", lunistring_totitle},
