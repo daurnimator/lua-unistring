@@ -21,6 +21,7 @@ build = {
 		unistring = {
 			sources = {
 				"unistring/unistring.c";
+				"unistring/uniconv.c";
 				"unistring/uc.c";
 				"unistring/uc_bidi_category.c";
 				"unistring/uc_general_category.c";
