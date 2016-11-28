@@ -14,7 +14,7 @@
 static const uninorm_t uninorms[] = {UNINORM_NFD, UNINORM_NFC, UNINORM_NFKD, UNINORM_NFKC};
 static const char *const uninormnames[] = {"NFD", "NFC", "NFKD", "NFKC", NULL};
 #define lunistring_checkuninorm(L, arg) (uninorms[luaL_checkoption((L), (arg), NULL, uninormnames)])
-#define lunistring_optuninorm(L, arg) (lua_isnoneornil(L,(arg))?NULL:lunistring_checkuninorm((L), (arg)))
+#define lunistring_optuninorm(L, arg, d) (lua_isnoneornil(L,(arg))?(d):lunistring_checkuninorm((L), (arg)))
 
 
 static int lunistring_width(lua_State *L) {
@@ -28,7 +28,7 @@ static int lunistring_width(lua_State *L) {
 
 
 static int lunistring_normalize(lua_State *L) {
-	uninorm_t nf = lunistring_optuninorm(L, 1);
+	uninorm_t nf = lunistring_optuninorm(L, 1, NULL);
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 2, &n);
 	luaL_Buffer b;
@@ -93,7 +93,7 @@ static int lunistring_toupper(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 3);
+	uninorm_t nf = lunistring_optuninorm(L, 3, NULL);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -121,7 +121,7 @@ static int lunistring_tolower(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 3);
+	uninorm_t nf = lunistring_optuninorm(L, 3, NULL);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -149,7 +149,7 @@ static int lunistring_totitle(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 3);
+	uninorm_t nf = lunistring_optuninorm(L, 3, NULL);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -177,7 +177,7 @@ static int lunistring_casefold(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 3);
+	uninorm_t nf = lunistring_optuninorm(L, 3, NULL);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	uint8_t *resultbuf, *tmp;
@@ -205,7 +205,7 @@ static int lunistring_casexfrm(lua_State *L) {
 	size_t n;
 	const uint8_t *s = (const uint8_t*)luaL_checklstring(L, 1, &n);
 	const char *iso639_language = luaL_optstring(L, 2, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 3);
+	uninorm_t nf = lunistring_optuninorm(L, 3, NULL);
 	luaL_Buffer b;
 	size_t lengthp = n; /* starting guess of equal length */
 	char *resultbuf, *tmp;
@@ -235,7 +235,7 @@ static int lunistring_casecoll(lua_State *L) {
 	const uint8_t *s1 = (const uint8_t*)luaL_checklstring(L, 1, &n1);
 	const uint8_t *s2 = (const uint8_t*)luaL_checklstring(L, 2, &n2);
 	const char *iso639_language = luaL_optstring(L, 3, NULL);
-	uninorm_t nf = lunistring_optuninorm(L, 4);
+	uninorm_t nf = lunistring_optuninorm(L, 4, NULL);
 	int resultp;
 	luaL_argcheck(L, nf == UNINORM_NFC || nf == UNINORM_NFKC || nf == NULL, 3, "must be either \"NFC\", \"NFKC\", or nil");
 
