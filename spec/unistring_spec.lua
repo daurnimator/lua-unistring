@@ -60,8 +60,6 @@ describe("casefold", function()
 		assert.same("�", unistring.casefold("\254", nil, "NFC"))
 		-- overlong
 		assert.same("��", unistring.casefold("\192\128", nil, "NFC"))
-		-- invalid code point
-		assert.same(nil, (unistring.casefold("\237\160\128", nil, "NFC")))
 	end)
 end)
 describe("casexfrm", function()
