@@ -20,6 +20,7 @@ build = {
 	modules = {
 		unistring = {
 			sources = {
+				"vendor/compat-5.3/c-api/compat-5.3.c";
 				"unistring/unistring.c";
 				"unistring/uniconv.c";
 				"unistring/unilbrk.c";
@@ -30,6 +31,9 @@ build = {
 			};
 			libraries = {
 				"unistring";
+			};
+			defines = {
+				"COMPAT53_PREFIX=lunistring";
 			};
 			incdirs = {
 				"vendor/compat-5.3/c-api/";
