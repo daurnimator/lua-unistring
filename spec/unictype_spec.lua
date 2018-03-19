@@ -89,4 +89,8 @@ describe("property", function()
 	it("has a working .is_valid()", function()
 		assert.truthy(property.is_valid(property.byname("ALPHABETIC")))
 	end)
+	it("de-deupes", function()
+		-- byname should return same thing for same arg
+		assert.same(property.byname("ALPHABETIC"), property.byname("ALPHABETIC"))
+	end)
 end)
