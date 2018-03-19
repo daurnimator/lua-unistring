@@ -27,6 +27,13 @@ describe("general categories", function()
 	it("has working .of()", function()
 		assert.same("Ll", general_category.of(string.byte("f")):name())
 	end)
+	it("de-deupes", function()
+		-- byname should return same thing for same arg
+		assert.same(general_category.byname("UPPERCASE_LETTER"), general_category.byname("UPPERCASE_LETTER"))
+		-- same "And" operation should return same thing
+		assert.same(general_category.And(general_category.byname("LETTER"), general_category.byname("UPPERCASE_LETTER")),
+			general_category.And(general_category.byname("LETTER"), general_category.byname("UPPERCASE_LETTER")))
+	end)
 end)
 describe("bidi categories", function()
 	local bidi_category = require "unistring.ctype.bidi_category"

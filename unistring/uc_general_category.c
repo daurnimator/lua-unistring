@@ -9,9 +9,20 @@
 
 
 static void lunistring_pushucgeneralcategory(lua_State *L, uc_general_category_t category) {
-	uc_general_category_t *ud = lua_newuserdata(L, sizeof(uc_general_category_t));
+	uc_general_category_t *ud;
+
+	lua_pushlstring(L, (const char*)&category, sizeof(uc_general_category_t));
+	if (lua_rawget(L, lua_upvalueindex(1)) == LUA_TUSERDATA)
+		return;
+	lua_pop(L, 1);
+
+	ud = lua_newuserdata(L, sizeof(uc_general_category_t));
 	*ud = category;
 	luaL_setmetatable(L, "uc_general_category_t");
+
+	lua_pushlstring(L, (const char*)&category, sizeof(uc_general_category_t));
+	lua_pushvalue(L, -2);
+	lua_rawset(L, lua_upvalueindex(1));
 }
 
 
@@ -98,13 +109,29 @@ int luaopen_unistring_ctype_general_category(lua_State *L) {
 		{NULL, NULL}
 	};
 
+	luaL_checkversion(L);
+	lua_settop(L, 0);
+
+	/* create weak table to dedupe uc_general_category_t */
+	lua_newtable(L);
+	lua_createtable(L, 0, 1);
+	lua_pushliteral(L, "kv");
+	lua_setfield(L, -2, "__mode");
+	lua_setmetatable(L, -2);
+
 	luaL_newmetatable(L, "uc_general_category_t");
-	luaL_newlib(L, uc_general_category_methods);
+	luaL_newlibtable(L, uc_general_category_methods);
+	lua_pushvalue(L, 1);
+	luaL_setfuncs(L, uc_general_category_methods, 1);
 	lua_setfield(L, -2, "__index");
 	lua_pop(L, 1);
 
-	luaL_newlib(L, lib);
-	luaL_setfuncs(L, uc_general_category_methods, 0); // add methods to lib too
+	lua_createtable(L, 0, sizeof(lib)/sizeof((lib)[0]) - 1
+		+ sizeof(uc_general_category_methods)/sizeof((uc_general_category_methods)[0]) - 1);
+	lua_pushvalue(L, 1);
+	luaL_setfuncs(L, lib, 1);
+	lua_pushvalue(L, 1);
+	luaL_setfuncs(L, uc_general_category_methods, 1); // add methods to lib too
 
 	return 1;
 }
