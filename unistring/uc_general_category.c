@@ -24,18 +24,24 @@ static int lunistring_uc_general_category(lua_State *L) {
 
 
 static int lunistring_uc_general_category_and(lua_State *L) {
-	uc_general_category_t *category1 = luaL_checkudata(L, 1, "uc_general_category_t");
-	uc_general_category_t *category2 = luaL_checkudata(L, 2, "uc_general_category_t");
-	uc_general_category_t res = uc_general_category_and(*category1, *category2);
+	uc_general_category_t res = *(uc_general_category_t*)luaL_checkudata(L, 1, "uc_general_category_t");
+	int n = lua_gettop(L);
+	int i;
+	for (i=2; i<=n; i++) {
+		res = uc_general_category_and(res, *(uc_general_category_t*)luaL_checkudata(L, i, "uc_general_category_t"));
+	}
 	lunistring_pushucgeneralcategory(L, res);
 	return 1;
 }
 
 
 static int lunistring_uc_general_category_or(lua_State *L) {
-	uc_general_category_t *category1 = luaL_checkudata(L, 1, "uc_general_category_t");
-	uc_general_category_t *category2 = luaL_checkudata(L, 2, "uc_general_category_t");
-	uc_general_category_t res = uc_general_category_or(*category1, *category2);
+	uc_general_category_t res = *(uc_general_category_t*)luaL_checkudata(L, 1, "uc_general_category_t");
+	int n = lua_gettop(L);
+	int i;
+	for (i=2; i<=n; i++) {
+		res = uc_general_category_or(res, *(uc_general_category_t*)luaL_checkudata(L, i, "uc_general_category_t"));
+	}
 	lunistring_pushucgeneralcategory(L, res);
 	return 1;
 }
